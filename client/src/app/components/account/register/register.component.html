@@ -1,0 +1,56 @@
+<form [formGroup]="registerFg" (ngSubmit)="registerFg.valid && register()">
+    <div class="content">
+        <h1>ثبت نام</h1>
+
+        <mat-form-field appearance="outline">
+            <mat-label>ایمیل</mat-label>
+            <input type="email" formControlName="emailCtrl" label="Email" placeHolder="Your email" matInput>
+            <mat-hint>ایمیل شما به عنوان نام کاربری شما استفاده خواهد شد</mat-hint>
+            @if (EmailCtrl.hasError('required')) {
+            <mat-error>این فیلد الزامی است.</mat-error>
+            }
+            @else if (EmailCtrl.hasError('pattern')) {
+            <mat-error>یک ایمیل معتبر وارد کنید</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>کلمه عبور</mat-label>
+            <input type="password" formControlName="passwordCtrl" label="Password" placeHolder="Your password" matInput>
+            @if (PasswordCtrl.hasError('required')) {
+            <mat-error>این فیلد الزامی است.</mat-error>
+            }
+            @else if (PasswordCtrl.hasError('minlength')) {
+            <mat-error>خیلی کوتاه است. حداقل: 7 کاراکتر</mat-error>
+            }
+            @else if(PasswordCtrl.hasError('maxlength')) {
+            <mat-error>خیلی طولانی است. حداکثر: 20 کاراکتر</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>تایید کلمه عبور</mat-label>
+            <input type="password" formControlName="confirmPasswordCtrl" label="Confirm Password"
+                placeHolder="Re-enter password" matInput>
+            @if (ConfirmPasswordCtrl.hasError('required')) {
+            <mat-error>این فیلد الزامی است.</mat-error>
+            }
+            @else if (ConfirmPasswordCtrl.hasError('minlength')) {
+            <mat-error>خیلی کوتاه است. حداقل: 7 کاراکتر</mat-error>
+            }
+            @else if(ConfirmPasswordCtrl.hasError('maxlength')) {
+            <mat-error>خیلی طولانی است. حداکثر: 20 کاراکتر</mat-error>
+            }
+        </mat-form-field>
+
+        <button type="submit" [disabled]="registerFg.invalid" mat-raised-button color="primary">ثبت نام</button>
+
+        <!-- Other Errors -->
+        @if (passowrdsNotMatch) {
+        <p>گذرواژه ها مطابقت ندارند!</p>
+        }
+        @if (apiErrorMessage) {
+        <p>{{apiErrorMessage}}</p>
+        }
+    </div>
+</form>

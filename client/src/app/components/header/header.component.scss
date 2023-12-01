@@ -1,0 +1,28 @@
+mat-toolbar {
+    h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        font-family: vazir;
+        margin-left: .5rem;
+        margin-right: .5rem;
+
+        mat-icon {
+            font-weight: 900;
+        }
+    }
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.button {
+    display: flex;
+    gap: 1rem;
+
+    button {
+        font-size: 1rem;
+        font-family: vazir;
+        font-weight: 500;
+    }
+}

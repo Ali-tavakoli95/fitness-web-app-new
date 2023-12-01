@@ -1,0 +1,47 @@
+mat-form-field {
+    width: 100%;
+    font-family: vazir;
+
+    mat-label {
+        font-family: vazir;
+    }
+
+    mat-hint {
+        // font-size: .5rem
+        font-family: yekan;
+    }
+
+    .radioButton {
+        font-family: vazir;
+    }
+
+    mat-option{
+        font-family: vazir;
+    }
+}
+
+#example-radio-group-label {
+    font-family: vazir;
+}
+
+.example-radio-group {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+    align-items: flex-start;
+    font-family: vazir;
+    font-size: 1rem;
+}
+
+.example-radio-button {
+    margin: 5px;
+    font-family: vazir;
+}
+
+.text {
+    font-family: vazir;
+}
+
+.vari-font{
+    font-family: vazir;
+}

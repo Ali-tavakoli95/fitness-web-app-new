@@ -1,0 +1,154 @@
+<div class="logo text-center">
+    <img width="300" src="../../../assets/logo/logo.png" alt="">
+</div>
+
+<div class="registration-form m-3 p-4">
+    <form [formGroup]="registerForm">
+        <div class="row">
+            <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>نام</mat-label>
+                    <input formControlName="firstName" matInput placeholder="نام">
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>نام خانوادگی</mat-label>
+                    <input formControlName="lastName" matInput placeholder="نام خانوادگی">
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>ایمیل</mat-label>
+                    <input type="email" formControlName="email" matInput placeholder="ایمیل">
+                    <mat-icon matSuffix>mail_outline</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>موبایل</mat-label>
+                    <input formControlName="mobile" type="number" matInput placeholder="موبایل">
+                    <mat-icon matSuffix>mobile_screen_share</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>وزن</mat-label>
+                    <input formControlName="weight" type="number" matInput placeholder="وزن">
+                    <mat-icon matSuffix>line_weight</mat-icon>
+                    <mat-hint>واحد وزن KGs است.</mat-hint>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>قد</mat-label>
+                    <input [readonly]="!this.registerForm.value?.weight" formControlName="height" type="number" matInput
+                        placeholder="قد">
+                    <mat-icon matSuffix><i class="fa fa-text-height" aria-hidden="true"></i></mat-icon>
+                    <mat-hint>واحد قد متر است</mat-hint>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>شاخص توده بدن (BMI) </mat-label>
+                    <input readonly type="number" formControlName="bmi" matInput placeholder="شاخص توده بدن">
+                    <mat-icon matSuffix><i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>نتیجه BMI</mat-label>
+                    <input readonly formControlName="bmiResult" matInput placeholder="نتیجه شاخص توده بدنی">
+                    <mat-icon matSuffix><i class="fa fa-check" aria-hidden="true"></i></mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-6 mt-3">
+                <label id="example-radio-group-label">جنسیت خود را انتخاب کنید:</label>
+                <mat-radio-group formControlName="gender" class="example-radio-group">
+                    @for (gender of genders; track $index) {
+                    <mat-radio-button class="example-radio-button" [value]="gender">
+                        {{gender}}
+                    </mat-radio-button>
+                    }
+                </mat-radio-group>
+                <div class="text">جنسیت انتخابی:</div>
+            </div>
+
+            <div class="col-md-6 mt-3">
+                <label id="example-radio-group-label">آیا به مربی نیاز دارید؟</label>
+                <mat-radio-group formControlName="requireTrainer" class="example-radio-group">
+                    @for (trainerOpt of trainerOpts; track $index) {
+                    <mat-radio-button class="example-radio-button" [value]="trainerOpt">
+                        {{trainerOpt}}
+                    </mat-radio-button>
+                    }
+                </mat-radio-group>
+                <div class="text">گزینه انتخاب شده این است:</div>
+            </div>
+
+            <div class="col-md-6 mt-4">
+                <mat-form-field appearance="outline">
+                    <mat-label>مدت دوره را انتخاب کنید</mat-label>
+                    <mat-select formControlName="package">
+                        @for (package of packages; track $index) {
+                        <mat-option class="vari-font" [value]="package">
+                            {{package}}
+                        </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-6 mt-4">
+                <mat-form-field appearance="outline">
+                    <mat-label>کدام یک از موارد زیر برای شما مهم است؟</mat-label>
+                    <mat-select formControlName="important" multiple>
+                        @for (important of importantList; track $index) {
+                        <mat-option class="vari-font" [value]="important">{{important}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-6 mt-3">
+                <mat-form-field appearance="outline">
+                    <mat-label>آیا قبلا باشگاه بوده اید؟</mat-label>
+                    <mat-select formControlName="haveGymBefore">
+                        @for (beenGym of beenGyms; track $index) {
+                        <mat-option class="vari-font" [value]="beenGym">
+                            {{beenGym}}
+                        </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-6 mt-3">
+                <mat-form-field appearance="outline">
+                    <mat-label>تاریخ شروع</mat-label>
+                    <input formControlName="enquiryDate" matInput [matDatepicker]="picker">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+
+        @if (!isUpdateActive) {
+        <button class="mt-4" (click)="submit()" mat-raised-button color="accent">ارسال</button>
+        }
+        @else {
+        <button class="mt-4" mat-raised-button color="accent">به روز
+            رسانی</button>
+        }
+    </form>
+</div>

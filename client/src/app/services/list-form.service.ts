@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment.development';
 export class ListFormService {
   http = inject(HttpClient);
 
-  private readonly baseApiUrl = environment.apiUrl + 'fitnessForm/';
+  private readonly baseApiUrl = environment.apiUrl + 'fitness/';
 
   getRegisteredUser() {
     return this.http.get<FitFormUser[]>(this.baseApiUrl + 'get-all');

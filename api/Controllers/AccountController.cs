@@ -6,12 +6,6 @@ namespace api.Controllers;
 [Route("api/[controller]")]
 public class AccountController(IAccountRepository _accountRepository) : BaseApiController
 {
-    /// <summary>
-    /// Create account
-    /// </summary>
-    /// <param name="userInput"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
     [HttpPost("register")]
     public async Task<ActionResult<LoggedInDto>> Register(RegisterDto userInput, CancellationToken cancellationToken)
     {
@@ -26,12 +20,6 @@ public class AccountController(IAccountRepository _accountRepository) : BaseApiC
         return loggedInDto;
     }
 
-    /// <summary>
-    /// Login account
-    /// </summary>
-    /// <param name="userInput"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
     [HttpPost("login")]
     public async Task<ActionResult<LoggedInDto>> Login(LoginDto userInput, CancellationToken cancellationToken)
     {

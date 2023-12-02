@@ -2,7 +2,7 @@ namespace api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class FitnessFormController(IFitnessFormRepository _fitnessFormRepository) : BaseApiController
+public class FitnessController(IFitnessFormRepository _fitnessFormRepository) : BaseApiController
 {
     public async Task<ActionResult<FitFormUser>> Create(FitFormUser userIn, CancellationToken cancellationToken)
     {

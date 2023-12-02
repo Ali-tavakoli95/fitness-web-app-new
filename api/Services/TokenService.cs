@@ -15,7 +15,7 @@ public class TokenService : ITokenService
         _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenValue!));
     }
 
-    public string CreateToken(AppUser user)
+    public string CreateToken(AppFitUser user)
     {
         _ = _key ?? throw new ArgumentNullException("_key cannot be null", nameof(_key));
 

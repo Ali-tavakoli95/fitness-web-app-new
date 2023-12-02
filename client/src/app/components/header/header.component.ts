@@ -17,7 +17,7 @@ import { User } from '../../models/user.model';
 })
 export class HeaderComponent implements OnInit {
 
-  // accountService = inject(AccountService);
+  accountService = inject(AccountService);
 
   user$: Observable<User | null> | undefined;
 
@@ -26,6 +26,6 @@ export class HeaderComponent implements OnInit {
   }
 
   logout(): void {
-    // this.accountService.logoutUser();
+    this.accountService.logoutUser();
   }
 }

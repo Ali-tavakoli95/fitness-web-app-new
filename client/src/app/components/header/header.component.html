@@ -7,6 +7,7 @@
     @if (user$ | async; as user){
     <button routerLink="register-form" mat-raised-button color="accent">فرم ثبت نام باشگاه</button>
     <button routerLink="list-form" mat-raised-button color="accent">مشاهده فرم ها</button>
+    <button mat-raised-button (click)="logout()">Logout</button>
     }
     @else{
     <button routerLink="account/register" mat-raised-button color="accent">ثبت نام</button>

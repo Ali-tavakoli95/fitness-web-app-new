@@ -1,9 +1,5 @@
-using api.DTOs;
-
 namespace api.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
 public class AccountController(IAccountRepository _accountRepository) : BaseApiController
 {
     [HttpPost("register")]

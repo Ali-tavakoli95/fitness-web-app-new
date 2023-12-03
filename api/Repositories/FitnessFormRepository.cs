@@ -1,6 +1,6 @@
 namespace api.Repositories;
 
-public class FitnessFormRepository
+public class FitnessFormRepository : IFitnessFormRepository
 {
     private const string _collectionName = "fit-form-users";
     private readonly IMongoCollection<FitFormUser>? _collection;
@@ -11,8 +11,13 @@ public class FitnessFormRepository
         _collection = database.GetCollection<FitFormUser>(_collectionName);
     }
 
-    public async Task<FitFormUser> CreateAsync(FitFormUser userIn, CancellationToken cancellationToken)
+    public async Task<UserFormDto?> CreateAsync(RegisterFormDto userIn, CancellationToken cancellationToken)
     {
+        bool doesExistEmail = await _collection.Find<FitFormUser>(user => user.Email == userIn.Email.ToLower().Trim()).AnyAsync(cancellationToken);
+
+        if (doesExistEmail)
+            return null;
+
         FitFormUser fitFormUser = new FitFormUser(
             Id: null,
             FirstName: userIn.FirstName,
@@ -34,40 +39,114 @@ public class FitnessFormRepository
         if (_collection is not null)
             await _collection.InsertOneAsync(fitFormUser, null, cancellationToken);
 
-        return fitFormUser;
+        if (fitFormUser.Id is not null)
+        {
+            UserFormDto userFormDto = new UserFormDto(
+                Id: fitFormUser.Id,
+                Email: fitFormUser.Email,
+                Mobile: fitFormUser.Mobile,
+                FirstName: fitFormUser.FirstName,
+                LastName: fitFormUser.LastName,
+                Weight: fitFormUser.Weight,
+                Height: fitFormUser.Height,
+                Bmi: fitFormUser.Bmi,
+                BmiResult: fitFormUser.BmiResult,
+                Gender: fitFormUser.Gender,
+                RequireTrainer: fitFormUser.RequireTrainer,
+                Package: fitFormUser.Package,
+                Important: fitFormUser.Important,
+                HaveGymBefore: fitFormUser.HaveGymBefore,
+                EnquiryDate: fitFormUser.EnquiryDate
+            );
+            return userFormDto;
+        }
+        return null;
     }
 
-    public async Task<List<FitFormUser>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<List<UserFormDto>> GetAllAsync(CancellationToken cancellationToken)
     {
         List<FitFormUser> fitFormUsers = await _collection.Find<FitFormUser>(new BsonDocument()).ToListAsync(cancellationToken);
 
-        return fitFormUsers;
+        List<UserFormDto> userFormDtos = new List<UserFormDto>();
+
+        if (fitFormUsers.Any())
+        {
+            foreach (FitFormUser fitFormUser in fitFormUsers)
+            {
+                UserFormDto userFormDto = new UserFormDto(
+                    Id: fitFormUser.Id!,
+                    Email: fitFormUser.Email,
+                    Mobile: fitFormUser.Mobile,
+                    FirstName: fitFormUser.FirstName,
+                    LastName: fitFormUser.LastName,
+                    Weight: fitFormUser.Weight,
+                    Height: fitFormUser.Height,
+                    Bmi: fitFormUser.Bmi,
+                    BmiResult: fitFormUser.BmiResult,
+                    Gender: fitFormUser.Gender,
+                    RequireTrainer: fitFormUser.RequireTrainer,
+                    Package: fitFormUser.Package,
+                    Important: fitFormUser.Important,
+                    HaveGymBefore: fitFormUser.HaveGymBefore,
+                    EnquiryDate: fitFormUser.EnquiryDate
+                );
+
+                userFormDtos.Add(userFormDto);
+            }
+
+            return userFormDtos;
+        }
+
+        return userFormDtos;
     }
 
-    public async Task<FitFormUser> GetFitUserAsync(string userId, CancellationToken cancellationToken)
+    public async Task<UserFormDto?> GetFitUserAsync(string userId, CancellationToken cancellationToken)
     {
         FitFormUser fitFormUser = await _collection.Find(v => v.Id == userId).FirstOrDefaultAsync();
 
-        return fitFormUser;
+        if (fitFormUser.Id is not null)
+        {
+            UserFormDto userDto = new UserFormDto(
+                Id: fitFormUser.Id,
+                Email: fitFormUser.Email,
+                Mobile: fitFormUser.Mobile,
+                FirstName: fitFormUser.FirstName,
+                LastName: fitFormUser.LastName,
+                Weight: fitFormUser.Weight,
+                Height: fitFormUser.Height,
+                Bmi: fitFormUser.Bmi,
+                BmiResult: fitFormUser.BmiResult,
+                Gender: fitFormUser.Gender,
+                RequireTrainer: fitFormUser.RequireTrainer,
+                Package: fitFormUser.Package,
+                Important: fitFormUser.Important,
+                HaveGymBefore: fitFormUser.HaveGymBefore,
+                EnquiryDate: fitFormUser.EnquiryDate
+            );
+
+            return userDto;
+        }
+
+        return null;
     }
 
-    public async Task<UpdateResult> UpdateByFitIdAsync(string userId, FitFormUser userIn, CancellationToken cancellationToken)
+    public async Task<UpdateResult> UpdateByFitIdAsync(string userId, UpdateFormDto userIn, CancellationToken cancellationToken)
     {
         var updatedFit = Builders<FitFormUser>.Update
-                .Set((FitFormUser doc) => doc.FirstName, userIn.FirstName)
-                .Set(doc => doc.LastName, userIn.LastName)
-                .Set(doc => doc.Email, userIn.Email)
-                .Set(doc => doc.Mobile, userIn.Mobile)
-                .Set(doc => doc.Weight, userIn.Weight)
-                .Set(doc => doc.Height, userIn.Height)
-                .Set(doc => doc.Bmi, userIn.Bmi)
-                .Set(doc => doc.BmiResult, userIn.BmiResult)
-                .Set(doc => doc.Gender, userIn.Gender)
-                .Set(doc => doc.RequireTrainer, userIn.RequireTrainer)
-                .Set(doc => doc.Package, userIn.Package)
-                .Set(doc => doc.Important, userIn.Important)
-                .Set(doc => doc.HaveGymBefore, userIn.HaveGymBefore)
-                .Set(doc => doc.EnquiryDate, userIn.EnquiryDate);
+        .Set((FitFormUser doc) => doc.FirstName, userIn.FirstName)
+        .Set(doc => doc.LastName, userIn.LastName)
+        .Set(doc => doc.Email, userIn.Email)
+        .Set(doc => doc.Mobile, userIn.Mobile)
+        .Set(doc => doc.Weight, userIn.Weight)
+        .Set(doc => doc.Height, userIn.Height)
+        .Set(doc => doc.Bmi, userIn.Bmi)
+        .Set(doc => doc.BmiResult, userIn.BmiResult)
+        .Set(doc => doc.Gender, userIn.Gender)
+        .Set(doc => doc.RequireTrainer, userIn.RequireTrainer)
+        .Set(doc => doc.Package, userIn.Package)
+        .Set(doc => doc.Important, userIn.Important)
+        .Set(doc => doc.HaveGymBefore, userIn.HaveGymBefore)
+        .Set(doc => doc.EnquiryDate, userIn.EnquiryDate);
 
         return await _collection.UpdateOneAsync<FitFormUser>(doc => doc.Id == userId, updatedFit);
     }

@@ -1,40 +1,42 @@
 namespace api.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
 public class FitnessController(IFitnessFormRepository _fitnessFormRepository) : BaseApiController
 {
-    public async Task<ActionResult<FitFormUser>> Create(FitFormUser userIn, CancellationToken cancellationToken)
+    [HttpPost("register")]
+    public async Task<ActionResult<UserFormDto>> Create(RegisterFormDto userIn, CancellationToken cancellationToken)
     {
-        FitFormUser fitFormUser = await _fitnessFormRepository.CreateAsync(userIn, cancellationToken);
+        UserFormDto? userFormDto = await _fitnessFormRepository.CreateAsync(userIn, cancellationToken);
 
-        return fitFormUser;
+        if (userFormDto is null)
+            return BadRequest("Email is taken.");
+
+        return userFormDto;
     }
 
     [HttpGet("get-all")]
-    public async Task<ActionResult<IEnumerable<FitFormUser>>> GetAll(CancellationToken cancellationToken)
+    public async Task<ActionResult<IEnumerable<UserFormDto>>> GetAll(CancellationToken cancellationToken)
     {
-        List<FitFormUser> fitFormUsers = await _fitnessFormRepository.GetAllAsync(cancellationToken);
+        List<UserFormDto> userFormDtos = await _fitnessFormRepository.GetAllAsync(cancellationToken);
 
-        if (!fitFormUsers.Any())
+        if (!userFormDtos.Any())
             return NoContent();
 
-        return fitFormUsers;
+        return userFormDtos;
     }
 
     [HttpGet("get-fit-user-by-id/{userId}")]
-    public async Task<ActionResult<FitFormUser>> GetFitUser(string userId, CancellationToken cancellationToken)
+    public async Task<ActionResult<UserFormDto>> GetFitUser(string userId, CancellationToken cancellationToken)
     {
-        FitFormUser fitFormUser = await _fitnessFormRepository.GetFitUserAsync(userId, cancellationToken);
+        UserFormDto? userFormDto = await _fitnessFormRepository.GetFitUserAsync(userId, cancellationToken);
 
-        if (fitFormUser is null)
+        if (userFormDto is null)
             return NoContent();
 
-        return fitFormUser;
+        return userFormDto;
     }
 
     [HttpPut("update/{userId}")]
-    public async Task<ActionResult<UpdateResult>> UpdateByFitId(string userId, FitFormUser userIn, CancellationToken cancellationToken)
+    public async Task<ActionResult<UpdateResult>> UpdateByFitId(string userId, UpdateFormDto userIn, CancellationToken cancellationToken)
     {
         UpdateResult updateResult = await _fitnessFormRepository.UpdateByFitIdAsync(userId, userIn, cancellationToken);
 

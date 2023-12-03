@@ -27,7 +27,11 @@ public class AccountRepository : IAccountRepository
             Id: null,
             Email: userInput.Email.ToLower().Trim(),
             PasswordSalt: hmac.ComputeHash(Encoding.UTF8.GetBytes(userInput.Password)),
-            PasswordHash: hmac.Key
+            PasswordHash: hmac.Key,
+            Age: userInput.Age,
+            Gender: userInput.Gender,
+            Country: userInput.Country,
+            City: userInput.City
         );
 
         if (_collection is not null)

@@ -16,23 +16,3 @@ public record RegisterFormDto(
     string HaveGymBefore,
     string EnquiryDate
 );
-
-// public record LoggedInDto(
-//     string Id,
-//     string Email,
-//     string UserName,
-//     string Mobile,
-//     string Token,
-//     string FirstName,
-//     string LastName,
-//     int Weight,
-//     double Height,
-//     double Bmi,
-//     string BmiResult,
-//     string Gender,
-//     string RequireTrainer,
-//     string Package,
-//     string[] Important,
-//     string HaveGymBefore,
-//     string EnquiryDate
-// );

@@ -59,7 +59,7 @@ public class AccountRepository : IAccountRepository
         if (appFitUser is null)
             return null;
 
-        using var hmac = new HMACSHA3_512(appFitUser.PasswordSalt!);
+        using var hmac = new HMACSHA512(appFitUser.PasswordSalt!);
 
         var ComputeHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(userInput.Password));
 

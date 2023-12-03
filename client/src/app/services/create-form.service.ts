@@ -13,6 +13,6 @@ export class CreateFormService {
   // private readonly baseApiUrl = environment.apiUrl + 'fitness/';
 
   postRegistration(registerObj: FitFormUser) {
-    return this.http.post<FitFormUser>("https://localhost:5001/api/fitness/register", registerObj);
+    return this.http.post<FitFormUser>("http://localhost:5000/api/fitness/register", registerObj);
   }
 }

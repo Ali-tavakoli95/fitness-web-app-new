@@ -4,14 +4,14 @@
   <span class="example-spacer"></span>
   <div class="button">
     <button routerLink="" mat-raised-button color="accent">خانه</button>
-    @if (user$ | async; as user){
+    <!-- @if (user$ | async; as user){ -->
     <button routerLink="register-form" mat-raised-button color="accent">فرم ثبت نام باشگاه</button>
     <button routerLink="list-form" mat-raised-button color="accent">مشاهده فرم ها</button>
-    <button mat-raised-button (click)="logout()">Logout</button>
-    }
-    @else{
+    <button mat-raised-button (click)="logout()" color="accent">خروج</button>
+    <!-- } -->
+    <!-- @else{
     <button routerLink="account/register" mat-raised-button color="accent">ثبت نام</button>
     <button routerLink="account/login" mat-raised-button color="accent">ورود</button>
-    }
+    } -->
   </div>
 </mat-toolbar>

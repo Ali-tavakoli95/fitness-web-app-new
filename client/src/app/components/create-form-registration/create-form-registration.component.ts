@@ -96,7 +96,7 @@ export class CreateFormRegistrationComponent implements OnInit {
       .subscribe(res => {
         this.toastService.success({ detail: "موفقیت", summary: "فرم به روز شد", duration: 3000 });
         this.registerForm.reset();
-        this.router.navigate(['list'])
+        this.router.navigate(['list-form'])
       })
   }
 

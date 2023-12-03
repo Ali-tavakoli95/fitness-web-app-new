@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -12,10 +12,7 @@ import { NgToastService } from 'ng-angular-popup';
 import { NgConfirmService } from 'ng-confirm-box';
 import { MatNativeDateModule } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
-
-
-
-
+import { ListFormService } from '../../services/list-form.service';
 
 @Component({
   selector: 'app-registration-form-list',
@@ -27,6 +24,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './registration-form-list.component.scss'
 })
 export class RegistrationFormListComponent implements OnInit {
+  listFormService = inject(ListFormService);
   public users!: FitFormUser[];
   dataSource!: MatTableDataSource<FitFormUser>;
 
@@ -41,18 +39,18 @@ export class RegistrationFormListComponent implements OnInit {
   }
 
   getUsers() {
-    // this.apiService.getRegisteredUser()
-    //   .subscribe({
-    //     next: (res) => {
-    //       this.users = res;
-    //       this.dataSource = new MatTableDataSource(this.users);
-    //       this.dataSource.paginator = this.paginator;
-    //       this.dataSource.sort = this.sort;
-    //     },
-    //     error: (err) => {
-    //       console.log(err);
-    //     }
-    //   })
+    this.listFormService.getRegisteredUser()
+      .subscribe({
+        next: (res) => {
+          this.users = res;
+          this.dataSource = new MatTableDataSource(this.users);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      })
   }
 
   edit(id: string) {
@@ -60,23 +58,23 @@ export class RegistrationFormListComponent implements OnInit {
   }
 
   deleteUser(id: string) {
-    // this.confirmService.showConfirm("آیا مطمئن هستید که می خواهید حذف کنید؟",
-    //   () => {
-    //     //your logic if Yes clicked
-    //     this.apiService.deleteRegistered(id)
-    //       .subscribe({
-    //         next: (res) => {
-    //           this.toastService.success({ detail: 'موفقیت', summary: 'با موفقیت حذف شد', duration: 3000 });
-    //           this.getUsers();
-    //         },
-    //         error: (err) => {
-    //           this.toastService.error({ detail: 'خطا', summary: 'مشکلی پیش آمد!', duration: 3000 });
-    //         }
-    //       })
-    //   },
-    //   () => {
-    //     //yor logic if No clicked
-    //   })
+    this.confirmService.showConfirm("آیا مطمئن هستید که می خواهید حذف کنید؟",
+      () => {
+        //your logic if Yes clicked
+        this.listFormService.deleteRegistered(id)
+          .subscribe({
+            next: (res) => {
+              this.toastService.success({ detail: 'موفقیت', summary: 'با موفقیت حذف شد', duration: 3000 });
+              this.getUsers();
+            },
+            error: (err) => {
+              this.toastService.error({ detail: 'خطا', summary: 'مشکلی پیش آمد!', duration: 3000 });
+            }
+          })
+      },
+      () => {
+        //yor logic if No clicked
+      })
   }
 
   applyFilter(event: Event) {

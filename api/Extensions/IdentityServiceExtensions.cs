@@ -4,7 +4,7 @@ namespace api.Extensions;
 
 public static class IdentityServiceExtensions
 {
-        public static IServiceCollection AddIdentityService(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddIdentityService(this IServiceCollection services, IConfiguration configuration)
     {
         #region Authentication & Authorization
         string tokenValue = configuration["TokenKey"]!;

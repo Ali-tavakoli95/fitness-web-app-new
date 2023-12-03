@@ -9,5 +9,4 @@ public record AppFitUser(
     string Gender,
     string Country,
     string City
-    
 );

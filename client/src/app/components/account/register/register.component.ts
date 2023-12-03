@@ -24,7 +24,11 @@ export class RegisterComponent {
   registerFg = this.fb.group({
     emailCtrl: ['', [Validators.required, Validators.pattern(/^([\w\.\-]+)@([\w\-]+)((\.(\w){2,5})+)$/)]], // Use / instead of ' around RegEx
     passwordCtrl: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(20)]],
-    confirmPasswordCtrl: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(20)]]
+    confirmPasswordCtrl: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(20)]],
+    ageCtrl: ['',[ Validators]],
+    genderCtrl: ['', [Validators]],
+    countryCtrl: ['', [Validators]],
+    cityCtrl: ['', [Validators]]
   })
 
   get EmailCtrl(): FormControl {
@@ -39,7 +43,22 @@ export class RegisterComponent {
     return this.registerFg.get('confirmPasswordCtrl') as FormControl;
   }
 
- 
+  get AgeCtrl(): FormControl {
+    return this.registerFg.get('ageCtrl') as FormControl;
+  }
+
+  get GenderCtrl(): FormControl {
+    return this.registerFg.get('genderCtrl') as FormControl;
+  }
+
+  get CountryCtrl(): FormControl {
+    return this.registerFg.get('countryCtrl') as FormControl;
+  }
+
+  get CityCtrl(): FormControl {
+    return this.registerFg.get('cityCtrl') as FormControl;
+  }
+
   register(): void {
     this.apiErrorMessage = undefined;
 
@@ -49,10 +68,14 @@ export class RegisterComponent {
       let user: RegisterUser = {
         email: this.EmailCtrl.value,
         password: this.PasswordCtrl.value,
-        confirmPassword: this.ConfirmPasswordCtrl.value
+        confirmPassword: this.ConfirmPasswordCtrl.value,
+        age: this.AgeCtrl.value,
+        gender: this.GenderCtrl.value,
+        country: this.CountryCtrl.value,
+        city: this.CityCtrl.value
       }
 
-      
+
       this.accountService.registerUser(user).subscribe({
         next: user => console.log(user),
         error: err => this.apiErrorMessage = err.error

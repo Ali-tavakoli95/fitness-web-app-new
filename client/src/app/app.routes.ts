@@ -5,6 +5,8 @@ import { RegistrationFormListComponent } from './components/registration-form-li
 import { RegisterComponent } from './components/account/register/register.component';
 import { LoginComponent } from './components/account/login/login.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { UserDetailComponent } from './components/user-detail/user-detail.component';
+import { Component } from '@angular/core';
 
 export const routes: Routes = [
     { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -12,6 +14,8 @@ export const routes: Routes = [
     { path: 'account/register', component: RegisterComponent },
     { path: 'account/login', component: LoginComponent },
     { path: 'register-form', component: CreateFormRegistrationComponent },
+    { path: 'update/:id', component: CreateFormRegistrationComponent },
+    { path: 'detail/:id', component: UserDetailComponent },
     { path: 'list-form', component: RegistrationFormListComponent },
     { path: '**', component: NotFoundComponent }
 ];

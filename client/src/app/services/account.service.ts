@@ -64,6 +64,6 @@ export class AccountService {
     if (isPlatformBrowser(this.platformId))
       localStorage.removeItem('user');
 
-    this.router.navigateByUrl('account/login');
+    this.router.navigateByUrl('home');
   }
 }

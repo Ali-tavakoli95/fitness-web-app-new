@@ -43,10 +43,29 @@
             }
         </mat-form-field>
 
-        <!-- <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline">
             <mat-label>سن</mat-label>
             <input type="number" formControlName="ageCtrl" label="سن" placeHolder="سن شما" matInput>
-        </mat-form-field> -->
+        </mat-form-field>
+
+        <label id="example-radio-group-label">جنسیت خود را انتخاب کنید:</label>
+        <mat-radio-group formControlName="genderCtrl" class="example-radio-group">
+            @for (gender of genders; track $index) {
+            <mat-radio-button [value]="gender">
+                {{gender}}
+            </mat-radio-button>
+            }
+        </mat-radio-group>
+
+        <mat-form-field appearance="outline">
+            <mat-label>نام کشور</mat-label>
+            <input type="text" formControlName="countryCtrl" label="کشور" placeHolder="نام کشور" matInput>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>نام شهر</mat-label>
+            <input type="text" formControlName="cityCtrl" label="شهر" placeHolder="نام شهر" matInput>
+        </mat-form-field>
 
         <button type="submit" [disabled]="registerFg.invalid" mat-raised-button color="primary">ثبت نام</button>
 

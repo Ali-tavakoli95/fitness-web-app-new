@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { FitFormUser } from '../models/fit-form-user.model';
 import { environment } from '../../environments/environment.development';
 
@@ -10,9 +10,9 @@ export class CreateFormService {
 
   constructor(private http: HttpClient) { }
 
-  // private readonly baseApiUrl = environment.apiUrl + 'fitness/';
+  private readonly baseApiUrl = environment.apiUrl + 'fitness/';
 
   postRegistration(registerObj: FitFormUser) {
-    return this.http.post<FitFormUser>("http://localhost:5000/api/fitness/register", registerObj);
+    return this.http.post<FitFormUser>(this.baseApiUrl + 'register', registerObj);
   }
 }

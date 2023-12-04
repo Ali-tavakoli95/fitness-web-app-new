@@ -8,7 +8,7 @@ public class FitnessController(IFitnessFormRepository _fitnessFormRepository) : 
         UserFormDto? userFormDto = await _fitnessFormRepository.CreateAsync(userIn, cancellationToken);
 
         if (userFormDto is null)
-            return BadRequest("Email is taken.");
+            return BadRequest("ایمیل قبلا ثبت شده است.");
 
         return userFormDto;
     }

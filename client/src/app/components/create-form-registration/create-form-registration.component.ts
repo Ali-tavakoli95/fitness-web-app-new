@@ -9,11 +9,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgToastModule, NgToastService } from 'ng-angular-popup';
+import { Message, NgToastModule, NgToastService } from 'ng-angular-popup';
 import { NgConfirmModule } from 'ng-confirm-box';
 import { CreateFormService } from '../../services/create-form.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListFormService } from '../../services/list-form.service';
+import { error } from 'console';
 
 
 @Component({
@@ -31,7 +32,7 @@ export class CreateFormRegistrationComponent implements OnInit {
   // private createFormService = Inject(CreateFormService);
   // private toastService = Inject(NgToastService);
   // selectedGender!: string;
-
+  apiErrorMessage: string | undefined;
   genders: string[] = ["مرد", "زن"];
   trainerOpts: string[] = ["آره", "نه"];
   packages: string[] = ["ماهانه", "سه ماه یکبار", "سالانه"];
@@ -53,20 +54,20 @@ export class CreateFormRegistrationComponent implements OnInit {
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', Validators.required],
-      mobile: ['', Validators.required],
-      weight: ['', Validators.required],
-      height: ['', Validators.required],
-      bmi: ['', Validators.required],
-      bmiResult: ['', Validators.required],
-      gender: ['', Validators.required],
-      requireTrainer: ['', Validators.required],
-      package: ['', Validators.required],
-      important: ['', Validators.required],
-      haveGymBefore: ['', Validators.required],
-      enquiryDate: ['', Validators.required]
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.pattern(/^([\w\.\-]+)@([\w\-]+)((\.(\w){2,5})+)$/)]],
+      mobile: ['', [Validators.required]],
+      weight: ['', [Validators.required]],
+      height: ['', [Validators.required]],
+      bmi: ['', [Validators.required]],
+      bmiResult: ['', [Validators.required]],
+      gender: ['', [Validators.required]],
+      requireTrainer: ['', [Validators.required]],
+      package: ['', [Validators.required]],
+      important: ['', [Validators.required]],
+      haveGymBefore: ['', [Validators.required]],
+      enquiryDate: ['', [Validators.required]]
     });
 
     this.registerForm.controls['height'].valueChanges.subscribe(res => {
@@ -84,11 +85,16 @@ export class CreateFormRegistrationComponent implements OnInit {
   }
 
   submit() {
+    this.apiErrorMessage = undefined;
+
     this.createFormService.postRegistration(this.registerForm.value)
-      .subscribe(res => {
+      .subscribe((res) => {
         this.toastService.success({ detail: "موفقیت", summary: "فرم اضافه شد", duration: 3000 });
         this.registerForm.reset();
-      })
+      },
+        err => {
+          this.apiErrorMessage = err.error
+        })
   }
 
   update() {

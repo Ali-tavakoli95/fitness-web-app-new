@@ -26,8 +26,8 @@ public class AccountRepository : IAccountRepository
         AppFitUser appFitUser = new AppFitUser(
             Id: null,
             Email: userInput.Email.ToLower().Trim(),
-            PasswordSalt: hmac.ComputeHash(Encoding.UTF8.GetBytes(userInput.Password)),
-            PasswordHash: hmac.Key,
+            PasswordHash: hmac.ComputeHash(Encoding.UTF8.GetBytes(userInput.Password)),
+            PasswordSalt: hmac.Key,
             Age: userInput.Age,
             Gender: userInput.Gender,
             Country: userInput.Country,

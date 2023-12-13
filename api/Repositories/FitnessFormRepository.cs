@@ -18,46 +18,15 @@ public class FitnessFormRepository : IFitnessFormRepository
         if (doesExistEmail)
             return null;
 
-        FitFormUser fitFormUser = new FitFormUser(
-            Id: null,
-            FirstName: userIn.FirstName,
-            LastName: userIn.LastName,
-            Email: userIn.Email,
-            Mobile: userIn.Mobile,
-            Weight: userIn.Weight,
-            Height: userIn.Height,
-            Bmi: userIn.Bmi,
-            BmiResult: userIn.BmiResult,
-            Gender: userIn.Gender,
-            RequireTrainer: userIn.RequireTrainer,
-            Package: userIn.Package,
-            Important: userIn.Important,
-            HaveGymBefore: userIn.HaveGymBefore,
-            EnquiryDate: userIn.EnquiryDate
-        );
+        FitFormUser fitFormUser = _Mappers.ConvertRegisterFormDtoToFitFormUser(userIn);
 
         if (_collection is not null)
             await _collection.InsertOneAsync(fitFormUser, null, cancellationToken);
 
         if (fitFormUser.Id is not null)
         {
-            UserFormDto userFormDto = new UserFormDto(
-                Id: fitFormUser.Id,
-                Email: fitFormUser.Email,
-                Mobile: fitFormUser.Mobile,
-                FirstName: fitFormUser.FirstName,
-                LastName: fitFormUser.LastName,
-                Weight: fitFormUser.Weight,
-                Height: fitFormUser.Height,
-                Bmi: fitFormUser.Bmi,
-                BmiResult: fitFormUser.BmiResult,
-                Gender: fitFormUser.Gender,
-                RequireTrainer: fitFormUser.RequireTrainer,
-                Package: fitFormUser.Package,
-                Important: fitFormUser.Important,
-                HaveGymBefore: fitFormUser.HaveGymBefore,
-                EnquiryDate: fitFormUser.EnquiryDate
-            );
+            UserFormDto userFormDto = _Mappers.ConvertFitFormUserToUserFormDto(fitFormUser);
+
             return userFormDto;
         }
         return null;
@@ -73,23 +42,7 @@ public class FitnessFormRepository : IFitnessFormRepository
         {
             foreach (FitFormUser fitFormUser in fitFormUsers)
             {
-                UserFormDto userFormDto = new UserFormDto(
-                    Id: fitFormUser.Id!,
-                    Email: fitFormUser.Email,
-                    Mobile: fitFormUser.Mobile,
-                    FirstName: fitFormUser.FirstName,
-                    LastName: fitFormUser.LastName,
-                    Weight: fitFormUser.Weight,
-                    Height: fitFormUser.Height,
-                    Bmi: fitFormUser.Bmi,
-                    BmiResult: fitFormUser.BmiResult,
-                    Gender: fitFormUser.Gender,
-                    RequireTrainer: fitFormUser.RequireTrainer,
-                    Package: fitFormUser.Package,
-                    Important: fitFormUser.Important,
-                    HaveGymBefore: fitFormUser.HaveGymBefore,
-                    EnquiryDate: fitFormUser.EnquiryDate
-                );
+                UserFormDto userFormDto = _Mappers.ConvertFitFormUserToUserFormDto(fitFormUser);
 
                 userFormDtos.Add(userFormDto);
             }
@@ -106,23 +59,7 @@ public class FitnessFormRepository : IFitnessFormRepository
 
         if (fitFormUser.Id is not null)
         {
-            UserFormDto userDto = new UserFormDto(
-                Id: fitFormUser.Id,
-                Email: fitFormUser.Email,
-                Mobile: fitFormUser.Mobile,
-                FirstName: fitFormUser.FirstName,
-                LastName: fitFormUser.LastName,
-                Weight: fitFormUser.Weight,
-                Height: fitFormUser.Height,
-                Bmi: fitFormUser.Bmi,
-                BmiResult: fitFormUser.BmiResult,
-                Gender: fitFormUser.Gender,
-                RequireTrainer: fitFormUser.RequireTrainer,
-                Package: fitFormUser.Package,
-                Important: fitFormUser.Important,
-                HaveGymBefore: fitFormUser.HaveGymBefore,
-                EnquiryDate: fitFormUser.EnquiryDate
-            );
+            UserFormDto userDto = _Mappers.ConvertFitFormUserToUserFormDto(fitFormUser);
 
             return userDto;
         }
@@ -148,7 +85,7 @@ public class FitnessFormRepository : IFitnessFormRepository
         .Set(doc => doc.HaveGymBefore, userIn.HaveGymBefore)
         .Set(doc => doc.EnquiryDate, userIn.EnquiryDate);
 
-        return await _collection.UpdateOneAsync<FitFormUser>(doc => doc.Id == userId, updatedFit);
+        return await _collection.UpdateOneAsync<FitFormUser>(doc => doc.Id == userId, updatedFit, null, cancellationToken);
     }
 
     public async Task<DeleteResult> DeleteAsync(string userId, CancellationToken cancellationToken)

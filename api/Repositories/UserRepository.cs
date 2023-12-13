@@ -12,18 +12,15 @@ public class UserRepository : IUserRepository
 
     public async Task<List<UserDto>> GetAllAsync(CancellationToken cancellationToken)
     {
-        List<AppFitUser> appUsers = await _collection.Find<AppFitUser>(new BsonDocument()).ToListAsync(cancellationToken);
+        List<AppFitUser> appFitUsers = await _collection.Find<AppFitUser>(new BsonDocument()).ToListAsync(cancellationToken);
 
         List<UserDto> userDtos = new List<UserDto>();
 
-        if (appUsers.Any())
+        if (appFitUsers.Any())
         {
-            foreach (AppFitUser appUser in appUsers)
+            foreach (AppFitUser appFitUser in appFitUsers)
             {
-                UserDto userDto = new UserDto(
-                    Id: appUser.Id!,
-                    Email: appUser.Email
-                );
+                UserDto userDto = _Mappers.ConvertAppFitUserToUserDto(appFitUser);
 
                 userDtos.Add(userDto);
             }
@@ -39,10 +36,7 @@ public class UserRepository : IUserRepository
         AppFitUser appFitUser = await _collection.Find<AppFitUser>(user => user.Id == userId).FirstOrDefaultAsync(cancellationToken);
 
         if (appFitUser is not null)
-            return new UserDto(
-                Id: appFitUser.Id!,
-                Email: appFitUser.Email
-            );
+            return _Mappers.ConvertAppFitUserToUserDto(appFitUser);
 
         return null;
     }

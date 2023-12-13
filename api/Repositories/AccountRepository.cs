@@ -21,29 +21,17 @@ public class AccountRepository : IAccountRepository
         if (doesAccountExist)
             return null;
 
-        using var hmac = new HMACSHA512();
-
-        AppFitUser appFitUser = new AppFitUser(
-            Id: null,
-            Email: userInput.Email.ToLower().Trim(),
-            PasswordHash: hmac.ComputeHash(Encoding.UTF8.GetBytes(userInput.Password)),
-            PasswordSalt: hmac.Key,
-            Age: userInput.Age,
-            Gender: userInput.Gender,
-            Country: userInput.Country,
-            City: userInput.City
-        );
+        AppFitUser appFitUser = _Mappers.ConvertRegisterDtoToAppFitUser(userInput);
 
         if (_collection is not null)
             await _collection.InsertOneAsync(appFitUser, null, cancellationToken);
 
         if (appFitUser.Id is not null)
         {
-            LoggedInDto loggedInDto = new LoggedInDto(
-                Id: appFitUser.Id,
-                Token: _tokenService.CreateToken(appFitUser),
-                Email: appFitUser.Email
-            );
+            // string token = _tokenService.CreateToken(appFitUser);
+
+            LoggedInDto loggedInDto = _Mappers.ConvertAppFitUserToLoggedInDto(
+                appFitUser, _tokenService.CreateToken(appFitUser));
 
             return loggedInDto;
         }
@@ -67,11 +55,9 @@ public class AccountRepository : IAccountRepository
         {
             if (appFitUser.Id is not null)
             {
-                return new LoggedInDto(
-                    Id: appFitUser.Id,
-                    Token: _tokenService.CreateToken(appFitUser),
-                    Email: appFitUser.Email
-                );
+                string token = _tokenService.CreateToken(appFitUser);
+
+                return _Mappers.ConvertAppFitUserToLoggedInDto(appFitUser, token);
             }
         }
 

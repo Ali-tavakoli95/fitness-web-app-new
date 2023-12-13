@@ -31,7 +31,7 @@ public class UserRepository : IUserRepository
         return userDtos;
     }
 
-    public async Task<UserDto?> GetByIdAsync(string userId, CancellationToken cancellationToken)
+    public async Task<UserDto?> GetByIdAsync(string? userId, CancellationToken cancellationToken)
     {
         AppFitUser appFitUser = await _collection.Find<AppFitUser>(user => user.Id == userId).FirstOrDefaultAsync(cancellationToken);
 
